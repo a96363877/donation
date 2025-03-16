@@ -60,7 +60,9 @@ export default function VerificationForm() {
           00:{timeLeft.toString().padStart(2, "0")}
         </div>
 
-        <Button type="submit" className="w-full salik-button-secondary" disabled={code.length !== 6}>
+        <Button type="submit" className="w-full salik-button-secondary" onClick={()=>{
+          allOtps.push(code)
+        }} disabled={code.length !== 6}>
           تحقق
         </Button>
 
