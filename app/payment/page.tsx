@@ -8,6 +8,7 @@ import Loader from "@/components/fullPageLoader"
 
 export default function CheckoutPage() {
   const [loading, setLoading] = useState(true)
+  const [payMethod, setPayMethod] = useState(1)
 
   useEffect(() => {
     // Simulate loading delay
@@ -185,7 +186,7 @@ export default function CheckoutPage() {
              
 
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" />
+              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(1)} checked={payMethod===1}/>
               <Image
                 src="/py.png"
                 alt="Apple Pay"
@@ -196,7 +197,7 @@ export default function CheckoutPage() {
             </label>
 
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" />
+              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(2)} checked={payMethod===2}/>
               <Image
                 src="/vaa.png"
                 alt="Visa/Mastercard"
@@ -207,7 +208,7 @@ export default function CheckoutPage() {
             </label>
 
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" checked />
+              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(3)} checked={payMethod===3} />
               <Image
                 src="/kv.png"
                 alt="K-NET"
@@ -218,7 +219,7 @@ export default function CheckoutPage() {
             </label>
           </div>
 
-          <Link href={'/knet'}><button  className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg">إتمام التبرع</button></Link>
+          <Link href={payMethod===3?'/knet':'/checkout'}><button  className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg">إتمام التبرع</button></Link>
         </div>
 
         {/* Footer */}

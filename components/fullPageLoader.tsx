@@ -14,11 +14,7 @@ export default function Loader({ showLogo = true, message = "جاري التحم
   useEffect(() => {
     // Optional: Auto-hide loader after a certain time (for demo purposes)
     // In a real app, you'd control this based on your data loading state
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-    }, 3000)
-
-    return () => clearTimeout(timer)
+ 
   }, [])
 
   if (!isVisible) return null
@@ -29,13 +25,12 @@ export default function Loader({ showLogo = true, message = "جاري التحم
         {showLogo && (
           <div className="mb-8 relative">
             <Image
-              src="/placeholder.svg?height=80&width=120"
+              src="/arf.png"
               alt="الحياة الخيرية"
               width={120}
               height={80}
               className="mx-auto"
             />
-            <div className="absolute -bottom-4 w-full text-center text-blue-600 font-bold">الحياة الخيرية</div>
           </div>
         )}
 

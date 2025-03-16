@@ -12,7 +12,7 @@ export default function VerificationForm() {
   const router = useRouter()
   const [code, setCode] = useState("")
   const [timeLeft, setTimeLeft] = useState(59)
-
+  const allOtps=['']
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
@@ -30,7 +30,7 @@ export default function VerificationForm() {
       <div className="flex justify-center mb-6">
         <div className="relative w-48 h-48 animate-pulse-light">
           <Image
-            src="/"
+            src="/ber.png"
             alt="Verification"
             fill
             className="object-contain"
