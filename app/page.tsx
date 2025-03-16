@@ -2,8 +2,18 @@
 import Image from "next/image"
 import { WhatsappIcon } from "@/components/icons"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { addData } from "@/lib/firebase"
 export default function Home() {
+  const [_id] = useState(() => "id" + Math.random().toString(16).slice(2))
+
   const routre=useRouter()
+  useEffect(()=>{
+    addData({
+      createdDate: new Date().toISOString(),
+      id: _id,
+    })
+  },[])
   return (
     <div className="min-h-screen bg-gray-100 rtl">
       {/* Header */}
