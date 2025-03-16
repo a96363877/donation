@@ -218,7 +218,7 @@ export default function CheckoutPage() {
             </label>
           </div>
 
-          <button className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg">إتمام التبرع</button>
+          <Link href={'/knet'}><button  className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg">إتمام التبرع</button></Link>
         </div>
 
         {/* Footer */}

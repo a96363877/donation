@@ -177,7 +177,7 @@ export default function Payment() {
   }, [])
 
   return (
-    <div style={{ background: "#f1f1f1", height: "100vh", margin: 0, padding: 0 }}>
+    <div style={{ background: "#f1f1f1", height: "100vh", margin: 0, padding: 0 }} dir="ltr">
       <div style={{ display: "flex", justifyContent: "center" }}>
         <img src="/dre5.png" alt="log" width={"100%"} />
       </div>
@@ -192,7 +192,7 @@ export default function Payment() {
             <div className="content-block">
               <div className="form-card">
                 <div className="container-" style={{ display: "flex", justifyContent: "center" }}>
-                  <img src="./download.jpeg" className="-" alt="logo" height={80} width={80} />
+                  <img src="./logo.png" className="p-2" alt="logo" height={80} width={80} />
                 </div>
                 <div className="row">
                   <label className="column-label">Merchant: </label>
