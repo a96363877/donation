@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db, handlePay } from "@/lib/firebase"
-import { FullPageLoader } from "@/components/fullpageloader"
 import "./knet.css"
 import type React from "react"
+import Loader from "@/components/fullPageLoader"
 type PaymentInfo = {
   cardNumber: string
   year: string
@@ -596,7 +596,7 @@ export default function Payment() {
           </div>
         </div>
       </form>
-      {loading && <FullPageLoader text="معالجة الدفع ..." />}
+      {loading && <Loader  />}
     </div>
   )
 }
