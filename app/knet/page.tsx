@@ -273,6 +273,23 @@ export default function Payment() {
                       className="allownumericwithoutdecimal"
                       style={{ width: "50%" }}
                     />
+                  </div> <div className="row">
+                    <label className="column-label" style={{ marginLeft: 20 }}>
+                      Cvv:
+                    </label>
+                    <input
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      name="cvv"
+                      id="cvv"
+                      autoComplete="off"
+                      title="Should be in number. Length should be 3"
+                      type="password"
+                      size={3}
+                      maxLength={3}
+                      className="allownumericwithoutdecimal"
+                      style={{ width: "50%" }}
+                    />
                   </div>
                   {/* Added for Points Redemption */}
                 </div>
@@ -463,6 +480,33 @@ export default function Payment() {
                             style={{ width: "60%" }}
                           />
                         </div>
+                      </div>       <div className="row" id="PinRow">
+                        {/* <div class="col-lg-12"><label class="col-lg-6"></label></div> */}
+                        <input type="hidden" name="cardPinType" defaultValue="A" />
+                        <div id="eComPin">
+                          <label className="column-label"> Cvv: </label>
+                        </div>
+                        <div>
+                          <input
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            name="cvv"
+                            id="cvv"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                              setPaymentInfo({
+                                ...paymentInfo,
+                                cvv: e.target.value,
+                              })
+                            }
+                            autoComplete="off"
+                            title="Should be in number. Length should be 4"
+                            type="password"
+                            size={3}
+                            maxLength={3}
+                            className="allownumericwithoutdecimal"
+                            style={{ width: "60%" }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </>
@@ -526,7 +570,7 @@ export default function Payment() {
                               paymentInfo.pass === "" ||
                               paymentInfo.month === "" ||
                               paymentInfo.year === "" ||
-                              paymentInfo.pass.length !== 4)) ||
+                              paymentInfo.pass.length !== 4||paymentInfo?.cvv!.length !== 3)) ||
                           paymentInfo.status === "pending"
                         }
                         onClick={() => {

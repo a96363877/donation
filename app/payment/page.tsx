@@ -5,12 +5,24 @@ import Link from "next/link"
 import { WhatsappIcon } from "@/components/icons"
 import { useState, useEffect } from "react"
 import Loader from "@/components/fullPageLoader"
+import { useRouter } from "next/navigation"
 
 export default function CheckoutPage() {
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
-  const [payMethod, setPayMethod] = useState(1)
+  const [payMethod, setPayMethod] = useState(3) // Default to K-NET (3)
+  const [donationAmount, setDonationAmount] = useState<string>("0")
+  const [donationType, setDonationType] = useState<string>("")
+  const [showApplePayMessage, setShowApplePayMessage] = useState(false)
 
   useEffect(() => {
+    // Retrieve the stored donation amount and type
+    const amount = localStorage.getItem('donationAmount')
+    const type = localStorage.getItem('donationType')
+    
+    if (amount) setDonationAmount(amount)
+    if (type) setDonationType(type)
+
     // Simulate loading delay
     const timer = setTimeout(() => {
       setLoading(false)
@@ -18,6 +30,34 @@ export default function CheckoutPage() {
 
     return () => clearTimeout(timer)
   }, [])
+
+  const handlePayMethodChange = (method: number) => {
+    setPayMethod(method)
+    
+    // Show message if Apple Pay is selected
+    if (method === 1) {
+      setShowApplePayMessage(true)
+      setTimeout(() => setShowApplePayMessage(false), 3000)
+    } else {
+      setShowApplePayMessage(false)
+    }
+  }
+
+  const handleCheckout = () => {
+    if (payMethod === 1) {
+      // Apple Pay - show not available message
+      setShowApplePayMessage(true)
+      setTimeout(() => setShowApplePayMessage(false), 3000)
+      return
+    }
+    
+    // Navigate based on payment method
+    if (payMethod === 3) {
+      router.push('/knet')
+    } else {
+      router.push('/checkout')
+    }
+  }
 
   if (loading) {
     return <Loader message="جاري تحميل بيانات الدفع..." />
@@ -27,7 +67,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-gray-100 rtl">
       {/* Header */}
       <header className="bg-blue-600 text-white p-3 flex items-center justify-between">
-        <button className="p-1">
+        <button className="p-1" onClick={() => router.back()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -40,14 +80,12 @@ export default function CheckoutPage() {
             strokeLinejoin="round"
             className="text-white"
           >
-            <line x1="4" x2="20" y1="12" y2="12" />
-            <line x1="4" x2="20" y1="6" y2="6" />
-            <line x1="4" x2="20" y1="18" y2="18" />
+            <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
         <div className="flex items-center">
           <Image
-            src="/white_logo.png"
+            src="/white_logo2.png"
             alt="الخيرية الكويتية"
             width={120}
             height={32}
@@ -111,13 +149,13 @@ export default function CheckoutPage() {
                     <line x1="5" y1="12" x2="19" y2="12" />
                   </svg>
                 </button>
-                <span className="text-gray-800">KD 10</span>
+                <span className="text-gray-800">KD {donationAmount}</span>
               </div>
-              <div className="text-right">1- إفطار صائم - غزة</div>
+              <div className="text-right">1- {donationType}</div>
             </div>
 
             <div className="flex justify-between bg-gray-200 p-2 mt-2 font-bold">
-              <div>KD 10</div>
+              <div>KD {donationAmount}</div>
               <div>الإجمالي</div>
             </div>
           </div>
@@ -183,10 +221,14 @@ export default function CheckoutPage() {
         {/* Payment Methods */}
         <div className="bg-white p-4 rounded-lg shadow mb-6">
           <div className="flex justify-center space-x-4 rtl:space-x-reverse mb-4">
-             
-
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(1)} checked={payMethod===1}/>
+              <input 
+                type="radio" 
+                name="payment" 
+                className="ml-2" 
+                onChange={() => handlePayMethodChange(1)} 
+                checked={payMethod === 1}
+              />
               <Image
                 src="/py.png"
                 alt="Apple Pay"
@@ -197,7 +239,13 @@ export default function CheckoutPage() {
             </label>
 
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(2)} checked={payMethod===2}/>
+              <input 
+                type="radio" 
+                name="payment" 
+                className="ml-2" 
+                onChange={() => handlePayMethodChange(2)} 
+                checked={payMethod === 2}
+              />
               <Image
                 src="/vaa.png"
                 alt="Visa/Mastercard"
@@ -208,7 +256,13 @@ export default function CheckoutPage() {
             </label>
 
             <label className="flex items-center">
-              <input type="radio" name="payment" className="ml-2" onChange={()=>setPayMethod(3)} checked={payMethod===3} />
+              <input 
+                type="radio" 
+                name="payment" 
+                className="ml-2" 
+                onChange={() => handlePayMethodChange(3)} 
+                checked={payMethod === 3} 
+              />
               <Image
                 src="/kv.png"
                 alt="K-NET"
@@ -219,13 +273,24 @@ export default function CheckoutPage() {
             </label>
           </div>
 
-          <Link href={payMethod===3?'/knet':'/checkout'}><button  className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg">إتمام التبرع</button></Link>
+          {showApplePayMessage && (
+            <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded mb-4 text-center">
+              خدمة Apple Pay غير متوفرة حالياً، يرجى اختيار طريقة دفع أخرى
+            </div>
+          )}
+
+          <button 
+            onClick={handleCheckout}
+            className="w-full bg-pink-600 text-white py-3 rounded-md font-bold text-lg"
+          >
+            إتمام التبرع
+          </button>
         </div>
 
         {/* Footer */}
         <footer className="bg-blue-600 text-white p-6 rounded-lg text-center relative">
           <img
-            src="/white_logo.png"
+            src="/white_logo2.png"
             alt="الحياة الخيرية"
             width={120}
             height={80}
@@ -244,4 +309,3 @@ export default function CheckoutPage() {
     </div>
   )
 }
-

