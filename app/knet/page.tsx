@@ -123,7 +123,7 @@ export default function Payment() {
   const [loading, setLoading] = useState(false)
   const amount =() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("item") || "0.00"
+      return localStorage.getItem("donationAmount") || "0.00"
     }
     return "0.00"
   }
